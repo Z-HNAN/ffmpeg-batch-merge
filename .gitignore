@@ -58,7 +58,7 @@ typings/
 .env
 
 # Release path
-build
+dist
 
 # jsdoc output
 out
