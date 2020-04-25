@@ -14,8 +14,8 @@
     "dist"
   ],
   "repository": {
-    "type": "",
-    "url": ""
+    "type": "git",
+    "url": "https://github.com/Z-HNAN/redux-action-creator.git"
   },
   "keywords": [
     "redux-action"
