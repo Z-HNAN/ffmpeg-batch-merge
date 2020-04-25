@@ -226,6 +226,6 @@ export default function* () {
 
 项目改进自于[https://github.com/marcosun/redux-action-boilerplate.git](https://github.com/marcosun/redux-action-boilerplate.git)
 
-- 使用`typescript`改写项目
+- 使用`typescript`改写项目,可自动推断出action的名称
 - 由之前的构造函数方式，改进为函数创建的方式
 - 去除过时的API
