@@ -1,7 +1,7 @@
 {
   "name": "package-seed-simplify",
   "version": "1.0.0",
-  "description": "publish npm use typescript project",
+  "description": "publish npm use typescript seed project",
   "main": "./dist/index.js",
   "types": "./dist/types/src/index.d.ts",
   "private": false,
