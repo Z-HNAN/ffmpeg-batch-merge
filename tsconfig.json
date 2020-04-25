@@ -4,7 +4,7 @@
     "outDir": "./dist/", // 打包到的目录
     "sourceMap": true, // 是否生成sourceMap（用于浏览器调试）
     "noImplicitAny": false,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "declaration": true, // 是否生成声明文件
     "declarationDir": "./dist/types/", // 声明文件打包的位置
@@ -29,7 +29,7 @@
   },
   "include": [
     "src/**/*.ts",
-    "test/**/*.ts",
+    "tests/**/*.ts",
   ], // 要打包的文件
   "exclude": [
     "node_modules",

@@ -1,5 +1,5 @@
 {
-  "name": "redux-action-creater",
+  "name": "redux-action-creator",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
@@ -7,8 +7,8 @@
   "private": false,
   "publisher": "zhn68033@163.com",
   "scripts": {
-    "build": "tsc",
-    "test": "jest"
+    "build": "webpack",
+    "test": "jest --config jestconfig.json"
   },
   "files": [
     "dist"
@@ -41,6 +41,7 @@
     "ts-jest": "^23.0.1",
     "ts-loader": "^5.3.3",
     "typescript": "^3.8.3",
-    "webpack": "^4.28.1"
+    "webpack": "^4.28.1",
+    "webpack-cli": "^3.3.11"
   }
 }
