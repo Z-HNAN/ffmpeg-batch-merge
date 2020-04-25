@@ -8,7 +8,7 @@ type AsyncAction = {
   TYPE: string;
   SUCCESS: string;
   FAILURE: string;
-}
+};
 
 /* Sync actions */
 class Async<T extends string> extends ActionCreator<T> {

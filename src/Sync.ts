@@ -4,7 +4,7 @@ import ActionCreator, { Action, ConstructorParams } from './ActionCreator';
 type SyncAction = {
   (payload?: any): Action;
   TYPE: string;
-}
+};
 
 /* Sync actions */
 class Sync<T extends string> extends ActionCreator<T> {

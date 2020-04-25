@@ -1,32 +1,21 @@
 import asyncCreator from '../src/Async';
 
 test('Create asynchronise actions and action types', () => {
-  const action = asyncCreator<string>({
+  const action = asyncCreator({
     prefix: 'pageA',
     actions: [
       'async-action-A',
-      'async-Action_b',
+      'asyncActionB',
     ],
   });
 
-  expect(action).toHaveProperty('ASYNC_ACTION_A', 'PAGE_A/ASYNC_ACTION_A');
-  expect(action).toHaveProperty('ASYNC_ACTION_A_SUCCESS', 'PAGE_A/ASYNC_ACTION_A_SUCCESS');
-  expect(action).toHaveProperty('ASYNC_ACTION_A_FAILURE', 'PAGE_A/ASYNC_ACTION_A_FAILURE');
-  expect(action).toHaveProperty('ASYNC_ACTION_B', 'PAGE_A/ASYNC_ACTION_B');
-  expect(action).toHaveProperty('ASYNC_ACTION_B_SUCCESS', 'PAGE_A/ASYNC_ACTION_B_SUCCESS');
-  expect(action).toHaveProperty('ASYNC_ACTION_B_FAILURE', 'PAGE_A/ASYNC_ACTION_B_FAILURE');
-
-  expect(action).toHaveProperty('asyncActionA');
-  expect(action).toHaveProperty('asyncActionASuccess');
-  expect(action).toHaveProperty('asyncActionAFailure');
+  expect(action).toHaveProperty('async-action-A');
   expect(action).toHaveProperty('asyncActionB');
-  expect(action).toHaveProperty('asyncActionBSuccess');
-  expect(action).toHaveProperty('asyncActionBFailure');
 
-  expect(action.asyncActionA).toHaveProperty('TYPE');
-  expect(action.asyncActionA).toHaveProperty('success');
-  expect(action.asyncActionA).toHaveProperty('failure');
-  expect(action.asyncActionA.TYPE).toEqual('PAGE_A/ASYNC_ACTION_A');
-  expect(action.asyncActionA.SUCCESS).toEqual('PAGE_A/ASYNC_ACTION_A_SUCCESS');
-  expect(action.asyncActionA.FAILURE).toEqual('PAGE_A/ASYNC_ACTION_A_FAILURE');
+  expect(action.asyncActionB).toHaveProperty('TYPE');
+  expect(action.asyncActionB).toHaveProperty('success');
+  expect(action.asyncActionB).toHaveProperty('failure');
+  expect(action.asyncActionB.TYPE).toEqual('PAGE_A/ASYNC_ACTION_B');
+  expect(action.asyncActionB.SUCCESS).toEqual('PAGE_A/ASYNC_ACTION_B_SUCCESS');
+  expect(action.asyncActionB.FAILURE).toEqual('PAGE_A/ASYNC_ACTION_B_FAILURE');
 });

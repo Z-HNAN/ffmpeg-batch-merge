@@ -18,8 +18,9 @@ test('Camelise action names', () => {
     'sync-action-A',
     'sync-Action_b',
     'Sync actionC',
+    'syncActionD',
   ])).toEqual({
     prefix: 'PAGE_A',
-    actions: ['syncActionA', 'syncActionB', 'syncActionC'],
+    actions: ['sync-action-A', 'sync-Action_b', 'Sync actionC', 'syncActionD'],
   });
 });

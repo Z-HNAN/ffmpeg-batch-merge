@@ -1,31 +1,32 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { camelize, decamelize } from 'humps';
 
 // ActionCreator类构造函数参数类型
 export type ConstructorParams<T> = {
   prefix: string;
   actions: T[];
-}
+};
 
 // ActionCreateor类配置
 type NormalisedOptions = {
   prefix: string;
-  actions: string[]
-}
+  actions: string[];
+};
 
 // action返回类型
 export type Action = {
   type: string;
   payload: any;
-}
+};
 
 // ActionCreator类型
-type ActionCreatorFN = (payload?: any) => Action
+type ActionCreatorFN = (payload?: any) => Action;
 
 // ActionElement
 type ActionElement = {
   PREFIX_ACTION_TYPE: string;
-  actionCreator: ActionCreatorFN
-}
+  actionCreator: ActionCreatorFN;
+};
 
 export default class ActionCreator<T extends string> {
   // async suffix
@@ -58,7 +59,7 @@ export default class ActionCreator<T extends string> {
 
     return {
       PREFIX_ACTION_TYPE,
-      actionCreator: (payload) => ({
+      actionCreator: (payload): Action => ({
         type: PREFIX_ACTION_TYPE,
         payload,
       }),
