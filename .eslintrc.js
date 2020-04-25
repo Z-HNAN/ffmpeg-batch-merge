@@ -20,6 +20,7 @@ module.exports = {
   rules: {
     'linebreak-style': 0,
     'no-console': 0,
+    '@typescript-eslint/no-explicit-any': 0,
     // "import/extensions": [ "error", "ignorePackages", { js: "never", jsx: "never", ts: "never", tsx: "never" } ]
     // "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }]
   }
