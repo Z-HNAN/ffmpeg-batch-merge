@@ -1,2 +1,3 @@
-export { default as asyncCreator } from './Async';
-export { default as syncCreator } from './Sync';
+export default function hello(name: string): string {
+  return `hello ${name}`;
+}
