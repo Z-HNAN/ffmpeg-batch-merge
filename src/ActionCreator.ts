@@ -73,7 +73,9 @@ export default class ActionCreator<T extends string> {
       /* Prefix takes the form of SOME_PREFIX. */
       prefix: ActionCreator.toUnderscoreUpperCase(prefix),
       /* Actions takes the form of someActions. */
-      actions: actions.map((action) => camelize(action)),
+      // actions: actions.map((action) => camelize(action)),
+      /* Action保留原样不做改变 */
+      actions,
     };
   }
 
