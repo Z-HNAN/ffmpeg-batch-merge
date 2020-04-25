@@ -1,6 +1,6 @@
 {
   "name": "redux-action-creator",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "creat redux action for async or sync",
   "main": "./dist/index.js",
   "types": "./dist/types/index.d.ts",
