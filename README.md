@@ -1,11 +1,11 @@
-# redux-action-creator
+# create-redux-action
 
 ## 安装
 
 ```sh
-yarn add redux-action-creator
+yarn add create-redux-action
 // or
-npm install --save redux-action-creator
+npm install --save create-redux-action
 ```
 
 ## 使用方式
@@ -21,7 +21,7 @@ Create a synchronous action to change visibility filter.
 
 ```typescript
 // action.ts
-import { syncCreator } from 'redux-action-creator';
+import { syncCreator } from 'create-redux-action';
 
 export const sync = syncCreator({
   /* Create a name space. */
@@ -93,7 +93,7 @@ export default function Reducer(state=initialState, action) {
 
 ```typescript
 // action.ts
-import { asyncCreator } from 'redux-action-creator';
+import { asyncCreator } from 'create-redux-action';
 
 export const async = asyncCreator({
   prefix: 'users',
