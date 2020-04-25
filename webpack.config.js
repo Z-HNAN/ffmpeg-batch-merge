@@ -16,11 +16,11 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.ts', '.json'],
   },
-  devtool: 'source-map', // 打包出的js文件是否生成map文件（方便浏览器调试）
+  devtool: 'nosources-source-map', // 打包出的js文件是否生成map文件（方便浏览器调试）
   mode: 'production',
   entry: './src/index.ts',
   output: {
-    filename: '[name].js', // 生成的fiename需要与package.json中的main一致
+    filename: 'index.js', // 生成的fiename需要与package.json中的main一致
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'commonjs',
   },
