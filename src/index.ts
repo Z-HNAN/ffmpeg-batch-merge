@@ -1,5 +1,3 @@
-#! /usr/bin/env node
-
 import inquirer from 'inquirer';
 
 import validateEnv from './validateEnv';
@@ -51,7 +49,7 @@ const run = async (): Promise<void> => {
   // 1.程序检查
   await validateEnv();
 
-  const biliParser = new BiliParser();
+  const biliParser = new BiliParser(__dirname);
   await biliParser.parse();
 
   // 2.目录准备

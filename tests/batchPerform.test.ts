@@ -41,9 +41,6 @@ describe('test batchPerform', () => {
   });
 
   test('test length Be 3', () => {
-    console.log('=============================');
-    console.log(tasksResolve);
-
     expect(tasksResolve.length).toBe(3);
     expect(tasksReject.length).toBe(3);
     expect(tasksResolveTimeout.length).toBe(3);

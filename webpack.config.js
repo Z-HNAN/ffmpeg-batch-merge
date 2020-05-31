@@ -24,6 +24,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'commonjs',
   },
+  target: 'node',
   module: {
     rules: [
       {
@@ -37,9 +38,10 @@ module.exports = {
             },
           },
         ],
-        exclude: /node_modules/,
+        exclude: [/node_modules/, /tests/],
       },
     ],
+    
   },
   plugins: [new CleanWebpackPlugin(pathsToClean, cleanOptions)],
 };
