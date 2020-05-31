@@ -16,5 +16,4 @@ async function validateFFmpeg(): Promise<void> {
 export default async function validateEnv(): Promise<void> {
   // 是否包含 FFmpeg
   await validateFFmpeg();
-
 }

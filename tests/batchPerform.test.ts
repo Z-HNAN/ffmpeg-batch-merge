@@ -11,9 +11,11 @@ describe('test batchPerform', () => {
 
   beforeAll(async () => {
     // 全通过
+    // eslint-disable-next-line max-len
     tasksResolve = await batchPerform<string>(payloads, async (value) => Promise.resolve(value));
 
     // 全不通过
+    // eslint-disable-next-line max-len
     tasksReject = await batchPerform<string>(payloads, async (value) => Promise.reject(Error(value)));
 
     // 全部超时通过

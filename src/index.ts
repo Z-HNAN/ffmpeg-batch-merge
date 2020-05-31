@@ -1,8 +1,5 @@
 #! /usr/bin/env node
 
-import * as fs from 'fs';
-import * as path from 'path';
-
 import inquirer from 'inquirer';
 
 import validateEnv from './validateEnv';
@@ -15,6 +12,7 @@ import ffmpegBin from './ffmpegBin';
  * 将生成结果转换为字符串
  * @param tasks 最终生成的任务
  */
+// eslint-disable-next-line import/prefer-default-export
 function tasksToString(tasks: taskType<VideoType>[]): string {
   // 转换成按照No排列的
   tasks.sort((prevTask, nextTask) => prevTask.payload.no - nextTask.payload.no);
@@ -95,12 +93,11 @@ const run = async (): Promise<void> => {
   console.log('==============处理完成，结果如下===============');
   console.log(tasksToString(tasks));
   console.timeEnd('run');
-}
+};
 
 try {
   // 运行程序
   run();
-
 } catch (error) {
   // 捕获到致命错误
   console.log('发生错误如下，请重新运行');
