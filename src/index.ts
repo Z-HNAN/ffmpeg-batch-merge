@@ -1,9 +1,14 @@
-import inquirer from 'inquirer';
+#! /usr/bin/env node
+
+import * as inquirer from 'inquirer';
+import { Spinner } from 'clui';
+import * as path from 'path';
 
 import validateEnv from './validateEnv';
 import BiliParser, { VideoType } from './BiliParser';
 import batchPerform, { taskType } from './batchPerform';
 import ffmpegBin from './ffmpegBin';
+import * as fs from './util/fs';
 
 
 /**
@@ -27,7 +32,7 @@ function tasksToString(tasks: taskType<VideoType>[]): string {
     }
   }), 0);
 
-  str += '任务完成情况' + successCount + '/' + tasks.length;
+  str += '任务完成情况' + successCount + '/' + tasks.length + '\r\n';
 
   tasks.forEach((task) => {
     str += task.payload.no + '): 处理结果 -> ';
@@ -38,6 +43,7 @@ function tasksToString(tasks: taskType<VideoType>[]): string {
       str += '失败\r\n'
         + '失败原因为: ' + task.errorInfo;
     }
+    str += '\r\n';
   });
 
   return str;
@@ -49,7 +55,7 @@ const run = async (): Promise<void> => {
   // 1.程序检查
   await validateEnv();
 
-  const biliParser = new BiliParser(__dirname);
+  const biliParser = new BiliParser(process.cwd());
   await biliParser.parse();
 
   // 2.目录准备
@@ -59,7 +65,7 @@ const run = async (): Promise<void> => {
   // 3.工作目录预览
   const perviewFolder: any = {
     type: 'confirm',
-    message: '即将生成如下文件，请进行确认：\r\n' + videos.map((v) => v.destPath),
+    message: '即将生成如下文件，请进行确认：\r\n' + videos.map((v) => v.destPath).join('\r\n') + '\r\n',
     name: 'isPerform',
     default: true, // 默认值
   };
@@ -69,6 +75,13 @@ const run = async (): Promise<void> => {
   if (isPerform === false) {
     return;
   }
+
+  // 开启Spinner
+  const spiner = new Spinner('生成文件中...');
+  spiner.start();
+
+  // 生成dest目录
+  await fs.mkdir(path.join(biliParser.PATH, biliParser.videoTitle));
 
   // 4.开启多任务处理
   async function handleFFmpegExport(video: VideoType): Promise<any> {
@@ -88,9 +101,11 @@ const run = async (): Promise<void> => {
   const tasks = await batchPerform<VideoType>(videos, handleFFmpegExport);
 
   // 展示结果
+  spiner.stop();
   console.log('==============处理完成，结果如下===============');
   console.log(tasksToString(tasks));
   console.timeEnd('run');
+
 };
 
 try {

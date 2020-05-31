@@ -4,13 +4,14 @@
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import util from 'util';
-import path from 'path';
-import fs from 'fs';
+import * as util from 'util';
+import * as path from 'path';
+import * as fs from 'fs';
 
 export const readFile = util.promisify(fs.readFile);
 export const readdir = util.promisify(fs.readdir);
 export const stat = util.promisify(fs.stat);
+export const mkdir = util.promisify(fs.mkdir)
 
 /**
  * 给定一个绝对目录，读取该目录下的所有文件夹内容

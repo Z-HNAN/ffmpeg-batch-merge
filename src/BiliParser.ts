@@ -2,7 +2,7 @@
  * bilibili下载文件夹目录解析
  */
 // import fs from 'fs';
-import path from 'path';
+import * as path from 'path';
 import * as fs from './util/fs';
 
 export type VideoType = {
@@ -44,7 +44,7 @@ class BiliParser {
     if (currentDir) {
       this.PATH = currentDir;
     } else {
-      this.PATH = __dirname;
+      this.PATH = process.cwd();
     }
   }
 
@@ -57,11 +57,12 @@ class BiliParser {
       throw Error(`${this.PATH}目录下未检测到合适的文件夹`);
     }
 
+    // 解析视频标题videoTitle
+    await this.parseTitle();
+
     // 解析所有的videos
     await this.parseVideos();
 
-    // 解析视频标题videoTitle
-    await this.parseTitle();
   }
 
   // 解析所有的文件夹
@@ -72,13 +73,30 @@ class BiliParser {
   // 解析视频标题
   async parseTitle(): Promise<void> {
     // 获取第一个成功视频
-    const { destPath } = this.videos.find((v) => v.success === true);
-    // 获取所在的文件夹绝对路径
-    const dirAPath = path.join(destPath, '..');
-    const dirs = await fs.readdir(dirAPath);
-    const videoInfoFileContent = (await fs.readFile(
-      path.join(dirAPath, dirs.find((d) => /info$/.test(d))),
-    )).toString();
+    let dirAPathIdx = 0;
+    let dirAPath = this.dirs[dirAPathIdx];
+
+    // 循环读取,保证读到合理的info文件
+    let videoInfoFileContent = '{}';
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        const dirs = await fs.readdir(dirAPath);
+        // eslint-disable-next-line no-await-in-loop
+        videoInfoFileContent = (await fs.readFile(
+          path.join(dirAPath, dirs.find((d) => /info$/.test(d))),
+        )).toString();
+        break;
+      } catch {
+        if (dirAPathIdx >= this.dirs.length) {
+          throw Error('目录中均未存在Info文件');
+        }
+        dirAPathIdx += 1;
+        dirAPath = this.dirs[dirAPathIdx];
+      }
+    }
+
     this.videoTitle = this.parseVideoContentTitle(JSON.parse(videoInfoFileContent));
   }
 
@@ -96,9 +114,9 @@ class BiliParser {
     // 检验目录
     const validateResult = await this.validateVideoDir(videoDir);
     if (validateResult === 'error') {
-      const errorInfo = '缺少视频/音频文件' + videoDir + ':\r\n'
+      const errorInfo = videoDir + ': 缺少视频/音频文件\r\n'
         + '如果该文件夹并不属于bilibili下载内容请予以忽略. \r\n'
-        + '如果该文件夹确实为bilibili下载内容，请向作者反馈.';
+        + '如果该文件夹确实为bilibili下载内容，请向作者反馈. \r\n';
       return {
         ...EMPTY_VIDEO,
         success: false,
@@ -114,7 +132,7 @@ class BiliParser {
 
     const videoPath = path.join(videoDir, this.getVideoFile(dirs));
     const audioPath = path.join(videoDir, this.getAudioFile(dirs));
-    const destPath = path.join(videoDir, `${videoInfo.no}.${videoInfo.name}.mp4`);
+    const destPath = path.join(this.PATH, this.videoTitle, `${videoInfo.no}.${videoInfo.name}.mp4`);
 
     return {
       success: true,

@@ -2,8 +2,8 @@
  * ffmpeg导出文件的方法
  */
 
-import util from 'util';
-import cp from 'child_process';
+import * as util from 'util';
+import * as cp from 'child_process';
 
 const exec = util.promisify(cp.exec);
 
@@ -15,5 +15,5 @@ export default async function ffmpegExport(
   audio: string,
   output: string,
 ): Promise<any> {
-  await exec(`ffmpeg -i ${video} -i ${audio} -c:v copy -c:a aac -strict experimental ${output}`);
+  await exec(`ffmpeg -i "${video}" -i "${audio}" -c:v copy -c:a aac -strict experimental "${output}"`);
 }
