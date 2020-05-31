@@ -6,48 +6,95 @@ import * as path from 'path';
 import inquirer from 'inquirer';
 
 import validateEnv from './validateEnv';
-import BiliParser from './BiliParser';
+import BiliParser, { VideoType } from './BiliParser';
+import batchPerform, { taskType } from './batchPerform';
+import ffmpegBin from './ffmpegBin';
+
+
+/**
+ * 将生成结果转换为字符串
+ * @param tasks 最终生成的任务
+ */
+function tasksToString(tasks: taskType<VideoType>[]): string {
+  // 转换成按照No排列的
+  tasks.sort((prevTask, nextTask) => prevTask.payload.no - nextTask.payload.no);
+
+  let str = '';
+
+  // 累计成功数量
+  const successCount = tasks.reduce(((totalCount, currentTask) => {
+    if (currentTask.success === true) {
+      return totalCount + 1;
+    // eslint-disable-next-line no-else-return
+    } else {
+      return totalCount;
+    }
+  }), 0);
+
+  str += '任务完成情况' + successCount + '/' + tasks.length;
+
+  tasks.forEach((task) => {
+    str += task.payload.no + '): 处理结果 -> ';
+    if (task.success === true) {
+      str += '成功\r\n'
+        + '文件保存路径: ' + task.payload.destPath;
+    } else {
+      str += '失败\r\n'
+        + '失败原因为: ' + task.errorInfo;
+    }
+  });
+
+  return str;
+}
 
 const run = async (): Promise<void> => {
+  console.time('run');
+
   // 1.程序检查
   await validateEnv();
 
+  const biliParser = new BiliParser();
+  await biliParser.parse();
+
   // 2.目录准备
-  const videos: video[] = [];
+  // eslint-disable-next-line prefer-destructuring
+  const videos = biliParser.videos;
 
-  // 1.获取文件夹名称
-  const promptFolder: any = {
-    type: 'input',
-    message: '请输入加密文件夹名称(回车使用默认文件夹名称):',
-    name: 'folderName',
-    default: Config.DEFAULT_FOLDER // 默认值
+  // 3.工作目录预览
+  const perviewFolder: any = {
+    type: 'confirm',
+    message: '即将生成如下文件，请进行确认：\r\n' + videos.map((v) => v.destPath),
+    name: 'isPerform',
+    default: true, // 默认值
+  };
+
+  const { isPerform } = await inquirer.prompt(perviewFolder);
+
+  if (isPerform === false) {
+    return;
   }
-  const { folderName } = await inquirer.prompt(promptFolder)
 
-  // 2.获取密码
-  const promptPassword: any = {
-    type: 'input',
-    message: '请输入密码(回车使用随机密码):',
-    name: 'password',
-    default: getPassword() // 默认值
+  // 4.开启多任务处理
+  async function handleFFmpegExport(video: VideoType): Promise<any> {
+    // 出错直接返回
+    if (video.success === false) {
+      throw Error(video.errorInfo);
+    }
+
+    // 正常处理
+    const {
+      videoPath,
+      audioPath,
+      destPath,
+    } = video;
+    await ffmpegBin(videoPath, audioPath, destPath);
   }
-  const { password } = await inquirer.prompt(promptPassword)
+  const tasks = await batchPerform<VideoType>(videos, handleFFmpegExport);
 
-  // 3.创建加密文件
-  const lockFileContent = getLockFile(folderName, password)
-
-  // 4.创建文件夹，加密文件
-  const fullPath = path.join(Config.PATH, folderName)
-
-  if (fs.existsSync(fullPath) === false) {
-    fs.mkdirSync(fullPath)
-  }
-  fs.writeFileSync(path.join(Config.PATH, 'locker.bat'), lockFileContent)
-
-  // 5.创建完成提示用户
-  console.log('创建加密文件完成,使用方式如下')
-  console.log(`加密: 将文件放入文件夹${folderName}中,之后双击运行locker.bat,选择y确定加密文件即可。`);
-  console.log(`解密: 双击运行locker.bat,输入密码,验证正确后即显示该文件夹。`);
+  // 展示结果
+  console.log('==============处理完成，结果如下===============');
+  console.log(tasksToString(tasks));
+  console.timeEnd('run');
 }
 
 try {

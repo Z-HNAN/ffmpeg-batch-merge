@@ -5,7 +5,7 @@
 import path from 'path';
 import * as fs from './util/fs';
 
-type VideoType = {
+export type VideoType = {
   success: boolean; // 是否解析成功
   errorInfo: string; // 解析失败原因
   no: number; // 视频的序号
