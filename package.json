@@ -1,13 +1,16 @@
 {
-  "name": "package-seed-simplify",
+  "name": "ffmpeg-batch-merge",
   "version": "1.0.0",
-  "description": "publish npm use typescript seed project",
+  "description": "ffmpeg batch merge audio and video",
   "main": "./dist/index.js",
   "types": "./dist/types/src/index.d.ts",
+  "bin": {
+    "ffmpeg-batch-merge": "./dist/index.js"
+  },
   "private": false,
   "publisher": "",
   "scripts": {
-    "build": "webpack",
+    "build": "tsc",
     "test": "jest --config jestconfig.json"
   },
   "files": [
@@ -21,15 +24,16 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "clui": "^0.3.6",
     "inquirer": "^7.1.0"
   },
   "devDependencies": {
+    "@types/clui": "^0.3.0",
     "@types/inquirer": "^6.5.0",
     "@types/jest": "^23.3.1",
     "@types/node": "^14.0.6",
     "@typescript-eslint/eslint-plugin": "2.24.0",
     "@typescript-eslint/parser": "^2.29.0",
-    "clean-webpack-plugin": "^1.0.1",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-config-airbnb-typescript": "^7.2.1",
@@ -37,9 +41,6 @@
     "eslint-plugin-jest": "^23.8.2",
     "jest": "^23.4.2",
     "ts-jest": "23.10.0",
-    "ts-loader": "^5.3.3",
-    "typescript": "^3.8.3",
-    "webpack": "^4.28.1",
-    "webpack-cli": "^3.3.11"
+    "typescript": "^3.8.3"
   }
 }
