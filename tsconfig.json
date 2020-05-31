@@ -10,9 +10,9 @@
     "declarationDir": "./dist/types/", // 声明文件打包的位置
     "declarationMap": true, // 是否生成声明文件map文件（便于调试）
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "module": "esnext",
-    "target": "es6", // 转化成的目标语言
+    "target": "es5", // 转化成的目标语言
     "baseUrl": "./",
     "types": [
       "node",
@@ -26,14 +26,13 @@
       "es2015"
     ],
     "jsx": "react",
-    "allowJs": false,
+    "allowJs": false
   },
   "include": [
     "src/**/*.ts",
-    "tests/**/*.ts",
   ], // 要打包的文件
   "exclude": [
     "node_modules",
-    "*.test.ts"
+    "tests/**/*.ts",
   ],
 }
